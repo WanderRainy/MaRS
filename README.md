@@ -1,89 +1,162 @@
-# MaRS  
-*A multi-modality very-high-resolution remote sensing foundation model with Cross-Granularity Meta-Modality Learning*  
+<div align="center">
 
-[![Project Status](https://img.shields.io/badge/status-active-development-brightgreen)](https://github.com/WanderRainy/MaRS)  
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
-[![GitHub stars](https://img.shields.io/github/stars/WanderRainy/MaRS.svg?style=social&label=Star)](https://github.com/WanderRainy/MaRS)  
+<h1>MaRS: A Multi-Modality Very-High-Resolution Remote Sensing Foundation Model with Cross-Granularity Meta-Modality Learning</h1>
 
----
+<h3>✨AAAI 2026✨</h3>
 
-## 🚀 Quick Links
+<div>
+    <a href='https://github.com/WanderRainy/' target='_blank'>Ruoyu Yang</a><sup>1</sup>&emsp;
+    <a>Yinhe Liu</a><sup>✉1</sup>&emsp;
+    <a>Heng Yan</a><sup>1</sup>&emsp;
+    <a>Yiheng Zhou</a><sup>1</sup>&emsp;
+    <a>Yihan Fu</a><sup>1</sup>&emsp;
+    <a>Han Luo</a><sup>1</sup>&emsp;
+    <a href='https://rsidea.whu.edu.cn/' target='_blank'>Yanfei Zhong</a><sup>✉1</sup>&emsp;
+</div>
+<div>
+    <sup>1</sup>Wuhan University&emsp;
+</div>
 
-- **Paper PDF**: [Download here](MaRS_AAAI26.pdf)  
-- **Code Repository**: [GitHub](https://github.com/WanderRainy/MaRS)  
-- **Dataset Page**: [MaRS-16M Dataset](https://rsidea.whu.edu.cn/mars.htm)  
-- **Project Homepage**: [RS-IDEA MaRS Project](https://rsidea.whu.edu.cn)  
+<div>
+    <h4 align="center">
+        • <a href="https://rsidea.whu.edu.cn/mars.htm" target='_blank'>[Project]</a> • <a href="https://rsidea.whu.edu.cn/mars.pdf" target='_blank'>[paper]</a> • <a href="https://rsidea.whu.edu.cn" target='_blank'>[Research Group (RS-IDEA)]</a> •
+    </h4>
+</div>
 
----
+<img src="https://github.com/user-attachments/assets/2be1af62-8b3d-439d-b23c-46e5af638569" width="100%"/>
+Overall framework of MaRS and examples of downstream tasks.
 
-## 📌 Project Overview  
-MaRS is developed by the RS‑IDEA Lab at Wuhan University.  
-It aims to build a powerful foundation model for very-high-resolution (VHR) remote sensing data by leveraging multi-modality (SAR + optical) and introducing advanced learning strategies:
-
-- A large-scale paired VHR SAR–Optical dataset **MaRS-16M** (≈ 16.8 million patch pairs).  
-- **Cross-Granularity Contrastive Learning (CGCL)** to align patch- and image-level semantics across modalities.  
-- **Meta-Modality Attention (MMA)** to unify heterogeneous modality representations via alternating intra-/cross-modality attention.  
-- Extensive evaluation across **nine** VHR multi-modality downstream tasks, demonstrating strong transfer ability of the MaRS model.
-
----
-
-## 🎯 Key Features  
-- ✅ Supports both SAR & Optical modalities at very high resolution.  
-- ✅ Robust to cross-modality alignment issues (geometric distortion, missing modality).  
-- ✅ Acts as a general pretrained backbone for classification, detection, segmentation, change detection, height estimation, mapping, and other tasks.  
-- ✅ Open-source code + dataset (with licensing info) for reproducibility.
+</div>
 
 ---
 
-## 📚 Dataset (MaRS-16M)  
-| Metric        | Value                        |
-|---------------|------------------------------|
-| Number of pairs | 16,785,168 SAR–Optical patches |
-| Resolution       | ~0.35 m GSD                   |
-| SAR sensors      | Umbra, Capella (X-band HH/VV) |
-| Patch size       | 512 × 512                      |
-| Coverage         | Global land cover, urban, disaster |
-| Use case         | Self-supervised pre-training on VHR multi-modality data |
+## 📰 Latest News
+
+- **Nov 2025** — MaRS paper accepted to **AAAI 2026**.  
+- **Nov 2025** — Pretraining code and model weights officially released.
 
 ---
 
-## 🧠 Model & Method  
-### Architecture  
-MaRS uses dual encoders (SwinV2 for optical, SwinV2 for SAR) → Meta-Modality Attention (MMA) Transformer → light task-specific heads.  
-### Pre-training Strategy  
-1. CGCL: patch-to-patch, patch-to-image, image-to-image contrastive training.  
-2. Masked image modelling per modality branch.  
-3. Continued pre-training on large VHR optical corpora for further refinement.  
-Inputs: 512×512 patches; Masking ratio ≈ 60%; Hardware: 8×A800 GPUs (example)  
-### Downstream Tasks  
-Includes registration, modality translation, missing-modality mapping, target detection, building detection, height estimation, change detection, road extraction, damage assessment.
+## 📦 Overview
+
+**MaRS** is a large-scale multi-modality foundation model designed for very-high-resolution remote sensing imagery.  
+It introduces **Cross-Granularity Meta-Modality Learning**, enabling robust representation learning across optical RGB and SAR modalities, at large spatial resolutions.
+
+This repository provides:  
+- Pretrained weights (`mars_base`, `mars_large`)  
+- Pretraining pipeline (data processing, configuration, and scripts)  
+- Instructions for loading MaRS using **timm** (compatible with SwinV2 architecture)
 
 ---
 
-## 📊 Results Summary  
-A selection of results:  
-- Cross-Modality Registration (GUSO): RMSE ≈ 2.83  
-- Modality-Missing Mapping (EarthMiss): mIoU ≈ 49.90  
-- Cross-Modality Translation (GUSO): PSNR ≈ 20.69  
-- SAR Target Detection (ARTDet / SARDet-100K): mAP ≈ 55.40  
-- … and others as detailed in the paper.
+## 🔧 Using MaRS in Your Project
+
+All pretrained weights are available at:  
+<https://zenodo.org/records/17800805>
+
+MaRS follows the **SwinV2** architecture and can be loaded directly using `timm==1.0.15`.
+
+### ▶ Optical RGB Example
+
+```python
+backbone_mars = timm.create_model(
+    'swinv2_base_window8_256',
+    pretrained=False,
+    features_only=True,
+    in_chans=3,
+    img_size=512,
+    checkpoint_path='mars_base_rgb_encoder_only.pth'
+)
+```
+
+### ▶ SAR Example
+
+```python
+backbone_mars = timm.create_model(
+    'swinv2_base_window8_256',
+    pretrained=False,
+    features_only=True,
+    in_chans=1,
+    img_size=512,
+    checkpoint_path='mars_base_sar_encoder_only.pth'
+)
+```
+
+The pretrained backbone has been validated on a wide range of high-resolution optical and multi-modal downstream tasks (details in the paper).
 
 ---
 
-## 📦 How to Use
+## 🏗️ Pretraining Pipeline
 
+This section describes how to reproduce MaRS pretraining.
 
-## 📦 Pretraining
-环境：
-python=3.11.13
-torch=2.7.0
-tifffile=2025.3.30
-timm=1.0.15
+---
 
-数据：新建./data，移动到该路径下。
+### 1. Environment Setup
 
-训练：mars_base
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
+A minimal software environment used in our experiments:
+
+```text
+python   = 3.11.13
+torch    = 2.7.0
+tifffile = 2025.3.30
+timm     = 1.0.15
+```
+
+---
+
+### 2. Data Preparation
+
+The full **MaRS-16M** pretraining corpus (~5 TB) is too large for public hosting.  
+A **public experimental subset** will be released :<https://zenodo.org/records/17800805>.
+
+To request full dataset access for academic collaboration, please contact:
+
+```
+yangruoyu@whu.edu.cn
+```
+
+#### 2.1 Download & Organize Raw Data
+
+```bash
+mkdir -p ./data
+# Place Umbra / Capella raw tiles into ./data
+```
+
+#### 2.2 Patch Extraction
+
+Extract **1024 × 1024** training patches:
+
+```bash
+python ./data/split_patch.py
+```
+
+After extraction:
+
+```text
+data/
+├── Capella_patches/
+│   ├── rgb/
+│   └── sar/
+└── Umbra_patches/
+    ├── rgb/
+    └── sar/
+```
+
+- `rgb/`: optical patches  
+- `sar/`: SAR patches  
+
+---
+
+### 3. Launching Pretraining
+
+Example commands for 8×GPU single-node training using `torchrun`.
+
+#### 3.1 MaRS-Base
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+torchrun \
     --nproc-per-node=8 \
     --nnodes=1 --node_rank=0 \
     --master_addr=localhost --master_port=12345 \
@@ -95,8 +168,13 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
     --log_dir ./work_dirs/mars_base \
     --epochs 12 \
     --warmup_epochs 1
-训练：mars_large
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
+```
+
+#### 3.2 MaRS-Large
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+torchrun \
     --nproc-per-node=8 \
     --nnodes=1 --node_rank=0 \
     --master_addr=localhost --master_port=12345 \
@@ -108,3 +186,43 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
     --log_dir ./work_dirs/mars_large \
     --epochs 12 \
     --warmup_epochs 1
+```
+
+---
+
+### 4. Converting MaRS Weights to Swin Format
+
+To make MaRS weights directly loadable by SwinTransformer (and `timm`), convert them via:
+
+```bash
+python utils/convert_mars_checkpoints_to_swin.py
+```
+
+The released weights have already undergone this conversion.
+
+---
+
+## 📖 Citation
+
+If you find **MaRS** useful in your research, please cite:
+
+```bibtex
+@inproceedings{yang2026mars,
+  title={MaRS: A Multi-Modality Very-High-Resolution Remote Sensing Foundation Model with Cross-Granularity Meta-Modality Learning},
+  author={Ruoyu Yang and Yinhe Liu and Heng Yan and Yiheng Zhou and Yihan Fu and Han Luo and Yanfei Zhong},
+  booktitle={AAAI Conference on Artificial Intelligence},
+  year={2026}
+}
+```
+
+---
+
+## © Copyright & Usage
+
+This method is copyrighted by the **Intelligent Remote Sensing Data Extraction, Analysis and Application Research Group (RSIDEA)**  
+<http://rsidea.whu.edu.cn/>  
+affiliated with the **State Key Laboratory of Information Engineering in Surveying, Mapping and Remote Sensing (LIESMARS), Wuhan University**.
+
+**MaRS is released strictly for academic research purposes.**
+
+---

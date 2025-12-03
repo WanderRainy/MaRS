@@ -70,15 +70,41 @@ A selection of results:
 
 ---
 
-## 📦 Installation & Usage  
-```bash
-# Clone repository
-git clone https://github.com/WanderRainy/MaRS.git
-cd MaRS
+## 📦 How to Use
 
-# Install requirements (example)
-pip install -r requirements.txt
 
-# Example usage
-python train_pretrain.py --config configs/mars_pretrain.yaml
-python downstream_task.py --task building_detection --pretrained model/mars.pth
+## 📦 Pretraining
+环境：
+python=3.11.13
+torch=2.7.0
+tifffile=2025.3.30
+timm=1.0.15
+
+数据：新建./data，移动到该路径下。
+
+训练：mars_base
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
+    --nproc-per-node=8 \
+    --nnodes=1 --node_rank=0 \
+    --master_addr=localhost --master_port=12345 \
+    main_pretrain.py \
+    --model mars_base \
+    --batch_size 16 \
+    --num_workers 8 \
+    --output_dir ./work_dirs/mars_base \
+    --log_dir ./work_dirs/mars_base \
+    --epochs 12 \
+    --warmup_epochs 1
+训练：mars_large
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
+    --nproc-per-node=8 \
+    --nnodes=1 --node_rank=0 \
+    --master_addr=localhost --master_port=12345 \
+    main_pretrain.py \
+    --model mars_large \
+    --batch_size 12 \
+    --num_workers 8 \
+    --output_dir ./work_dirs/mars_large \
+    --log_dir ./work_dirs/mars_large \
+    --epochs 12 \
+    --warmup_epochs 1

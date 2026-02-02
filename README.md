@@ -113,7 +113,7 @@ A **public experimental subset** will be released :<https://zenodo.org/records/1
 <del>To request full dataset access for academic collaboration, please contact:</del>
 
 ```
-<del>yangruoyu@whu.edu.cn</del>
+yangruoyu@whu.edu.cn
 ```
 
 Note: The dataset is currently under organization and is not publicly available. For collaboration inquiries, please feel free to contact us via email.

@@ -110,11 +110,14 @@ timm     = 1.0.15
 The full **MaRS-16M** pretraining corpus (~5 TB) is too large for public hosting.  
 A **public experimental subset** will be released :<https://zenodo.org/records/17800805>.
 
-To request full dataset access for academic collaboration, please contact:
+<del>To request full dataset access for academic collaboration, please contact:</del>
 
 ```
-yangruoyu@whu.edu.cn
+<del>yangruoyu@whu.edu.cn</del>
 ```
+
+Note: The dataset is currently under organization and is not publicly available. For collaboration inquiries, please feel free to contact us via email.
+
 
 #### 2.1 Download & Organize Raw Data
 

@@ -1,4 +1,4 @@
-[![Website](https://rsidea.whu.edu.cn/)]
+[![Website](https://img.shields.io/badge/Website-MaRS-0F62FE)](https://rsidea.whu.edu.cn/)
 
 <div align="center">
 

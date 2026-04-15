@@ -1,4 +1,4 @@
-[![Website](https://rsidea.whu.edu.cn/)
+[![Website](https://rsidea.whu.edu.cn/)]
 
 <div align="center">
 

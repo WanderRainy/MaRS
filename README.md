@@ -208,7 +208,7 @@ The released weights have already undergone this conversion.
 ---
 
 ## 📕 Downtasks Dataset
-GUSO：Multi-modality Paired High-resolution Remote Sensing Dataset. [Under review]
+GUSO：Multi-modality Paired High-resolution Remote Sensing Dataset. [Download](https://github.com/vision-heng/GUSO)
 
 EarthMiss: Missing Modality Land Cover Mapping. [Download](https://rsidea.whu.edu.cn/EarthMiss.html)
 
